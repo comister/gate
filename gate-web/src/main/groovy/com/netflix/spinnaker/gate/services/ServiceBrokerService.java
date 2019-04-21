@@ -30,7 +30,11 @@ public class ServiceBrokerService {
     this.clouddriverService = clouddriverService;
   }
 
-  public List<Map> listServices(String cloudProvider, String account) {
-    return this.clouddriverService.listServices(cloudProvider, account);
+  public List<Map> listServices(String cloudProvider, String region, String account) {
+    return this.clouddriverService.listServices(cloudProvider, region, account);
+  }
+
+  public Map getServiceInstance(String account, String cloudProvider, String region, String serviceInstanceName) {
+    return this.clouddriverService.getServiceInstance(account, cloudProvider, region, serviceInstanceName);
   }
 }

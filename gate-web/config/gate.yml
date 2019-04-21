@@ -35,7 +35,8 @@ services:
             packageType: RPM
 # optional services:
   echo:
-    enabled: false
+    baseUrl: http://localhost:8089
+    enabled: true
   fiat:
     enabled: false
   flapjack:
@@ -84,6 +85,12 @@ swagger:
     - .*firewalls.*
     - .*version.*
     - .*pubsub.*
+    - .*projects.*
+
+integrations:
+  gremlin:
+    enabled: false
+    baseUrl: https://api.gremlin.com/v1
 
 hystrix:
   command:
@@ -142,6 +149,7 @@ security:
     resource:
       userInfoUri: https://graph.windows.net/me?api-version=1.6
     userInfoMapping:
+      username: userPrincipalName
       email: userPrincipalName
       firstName: givenName
       lastName: surname

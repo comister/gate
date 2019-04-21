@@ -193,8 +193,8 @@ class ApplicationServiceSpec extends Specification {
     def apps = service.getAllApplications()
 
     then:
-    1 * clouddriver.getApplications(true) >> [clouddriverApp]
-    1 * front50.getAllApplications() >> [front50App]
+    1 * clouddriver.getAllApplicationsUnrestricted(true) >> [clouddriverApp]
+    1 * front50.getAllApplicationsUnrestricted() >> [front50App]
 
     1 == apps.size()
     apps[0].email == email

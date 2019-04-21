@@ -25,6 +25,7 @@ import retrofit.client.Response
 import retrofit.http.Body
 import retrofit.http.GET
 import retrofit.http.Headers
+import retrofit.http.POST
 import retrofit.http.PUT
 import retrofit.http.Path
 import retrofit.http.Query
@@ -81,6 +82,10 @@ interface ClouddriverService {
   @Headers("Accept: application/json")
   @GET("/applications")
   List getApplications(@Query("expand") boolean expand)
+
+  @Headers("Accept: application/json")
+  @GET("/applications?restricted=false")
+  List getAllApplicationsUnrestricted(@Query("expand") boolean expand)
 
   @Headers("Accept: application/json")
   @GET("/applications/{name}")
@@ -150,15 +155,12 @@ interface ClouddriverService {
                        @Query("cloudProvider") String cloudProvider)
 
   @Headers("Accept: application/json")
-  @GET("/applications/{name}/jobs")
-  List getJobs(@Path("name") String name, @Query("expand") String expand)
-
-  @Headers("Accept: application/json")
-  @GET("/applications/{name}/jobs/{account}/{region}/{jobName}")
+  @POST("/applications/{name}/jobs/{account}/{region}/{jobName}")
   Map getJobDetails(@Path("name") String name,
                     @Path("account") String account,
                     @Path("region") String region,
-                    @Path("jobName") String jobName)
+                    @Path("jobName") String jobName,
+                    @Body String emptyStringForRetrofit)
 
   @Headers("Accept: application/json")
   @GET("/applications/{name}/serverGroups/{account}/{region}/{serverGroupName}")
@@ -329,6 +331,15 @@ interface ClouddriverService {
   @PUT('/artifacts/fetch')
   Response getArtifactContent(@Body Map artifact)
 
+  @GET('/artifacts/account/{accountName}/names')
+  List<String> getArtifactNames(@Path("accountName") String accountName,
+                                @Query("type") String type)
+
+  @GET('/artifacts/account/{accountName}/versions')
+  List<String> getArtifactVersions(@Path("accountName") String accountName,
+                                   @Query("type") String type,
+                                   @Query("artifactName") String artifactName)
+
   @GET('/roles/{cloudProvider}')
   List<Map> getRoles(@Path("cloudProvider") String cloudProvider)
 
@@ -357,6 +368,13 @@ interface ClouddriverService {
 
   @GET("/servicebroker/{account}/services")
   List<Map> listServices(@Query(value = "cloudProvider") String cloudProvider,
+                         @Query(value = "region") String region,
                          @Path(value = "account") String account)
+
+  @GET("/servicebroker/{account}/serviceInstance")
+  Map getServiceInstance(@Path(value = "account") String account,
+                         @Query(value = "cloudProvider") String cloudProvider,
+                         @Query(value = "region") String region,
+                         @Query(value = "serviceInstanceName") String serviceInstanceName)
 
 }
